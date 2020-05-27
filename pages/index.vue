@@ -37,44 +37,45 @@
         <div
           v-for="(user, index) in users"
           :key="user.id.value"
-          class="column is-4"
+          class="column is-one-third-widescreen is-half-tablet"
         >
           <b-collapse :ref="'user-' + index" class="card" :open="false">
+
             <div
               slot="trigger"
               class="card-header"
+              slot-scope="props"
               role="button"
             >
-              <div
-                class="box is-borderless is-shadowless is-radiusless is-fullwidth"
-              >
-                <div class="media flex-align-center">
-                  <div class="media-left">
-                    <figure class="image">
-                      <img class="is-rounded" :src="user.picture.thumbnail" />
-                    </figure>
-                  </div>
+            
+              <div class="media box is-shadowless is-borderless is-fullwidth flex-align-center">
+                <div class="media-left">
+                  <figure class="image">
+                    <img class="is-rounded" :src="user.picture.thumbnail" />
+                  </figure>
+                </div>
 
-                  <div class="media-content">
-                    <p class="title is-5">
-                      {{ user.name.title }} {{ user.name.last }}
-                      {{ user.name.first }}
-                    </p>
-                    <p class="subtitle is-7">
-                      {{ user.email }}
-                    </p>
-                  </div>
+                <div class="media-content">
+                  <p class="title is-5">
+                    {{ user.name.title }} {{ user.name.last }}
+                    {{ user.name.first }}
+                  </p>
+                  <p class="subtitle is-7">
+                    {{ user.email }}
+                  </p>
+                </div>
 
-                  <div class="media-right">
-                    <b-icon icon="plus-circle"></b-icon>
-                  </div>
+                <div class="media-right">
+                  <b-icon
+                      :icon="props.open ? 'minus' : 'plus'">
+                  </b-icon>
                 </div>
               </div>
             </div>
 
+
             <div class="card-content has-text-7">
               <p><strong>Gender:</strong> {{ user.gender }}</p>
-
               <p>
                 <strong>Street:</strong> {{ user.location.street.number }}
                 {{ user.location.street.name }}
@@ -86,10 +87,11 @@
                 {{ user.location.country }}
                 {{ user.location.postcode }}
               </p>
-
               <p><strong>Nationality:</strong> {{ user.nat }}</p>
             </div>
+
           </b-collapse>
+
         </div>
       </div>
     </div>
@@ -139,7 +141,10 @@ export default {
           const newUsers = res.data.results
           this.users = [...this.users, ...newUsers]
           this.success(
-            newUsers.length + ' new user' + (newUsers.length > 1 ? 's' : '')
+            'Added ' +
+              newUsers.length +
+              ' new user' +
+              (newUsers.length > 1 ? 's' : '')
           )
           this.isLoading = false
           setTimeout(() => {
